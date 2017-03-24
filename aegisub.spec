@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -17,6 +17,8 @@ URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
 Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Patch0:         %{name}-pthread.patch
+
+ExclusiveArch:  i686 x86_64 armv7hl
 
 Requires:       hicolor-icon-theme
 
@@ -95,6 +97,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Mar 24 2017 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-4
+- exclude ppc and aarch64 as the bundled luajit fails to build
+
 * Thu Sep  29 2016 Michal Ambroz <rebus at, seznam.cz> - 3.2.2-3
 - remove the version suffix from the commandline and lang catalog
 - addedd build dependency to libcxx-devel, used for openal detection
