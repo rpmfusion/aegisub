@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -97,6 +97,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 3.2.2-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sat Jul 15 2017 Paul Howarth <paul@city-fan.org> - 3.2.2-5
 - perl 5.26 rebuild
 
