@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -17,6 +17,11 @@ URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
 Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Patch0:         %{name}-pthread.patch
+# Fix compilation against icu 59.1
+# https://github.com/Aegisub/Aegisub/commit/dd67db47cb2203e7a14058e52549721f6ff16a49
+%if 0%{?fedora} > 27
+Patch1:         https://github.com/%{gituser}/%{gitname}/commit/dd67db47cb2203e7a14058e52549721f6ff16a49.patch#/icu_59_buildfix.patch
+%endif
 
 ExclusiveArch:  i686 x86_64 armv7hl
 
@@ -97,6 +102,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Dec 27 2017 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-7
+- Fix build for icu-59.1
+
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 3.2.2-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
