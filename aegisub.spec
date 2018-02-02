@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -62,7 +62,7 @@ subtitles to audio, and features many powerful tools for styling them,
 including a built-in real-time video preview.
 
 %prep
-%autosetup -n %{gitname}-%{version} -p 1
+%autosetup -p1 -n %{gitname}-%{version}
 
 
 %build
@@ -74,34 +74,25 @@ sed -i -e 's/aegisub-[0-9.]*/aegisub/g' configure
 
 %install
 %make_install
+
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+
 %find_lang %{name}
-
-%post
-update-desktop-database &> /dev/null ||:
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-%postun
-update-desktop-database &> /dev/null ||:
-if [ $1 -eq 0 ] ; then
-        touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-        gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
 
 %files -f %{name}.lang
 %license LICENCE
 %doc docs/*
 %{_bindir}/%{name}*
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
 
 
 %changelog
+* Fri Feb 02 2018 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-8
+- Rebuild for boost-1.66
+- Remove scriptlets
+
 * Wed Dec 27 2017 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-7
 - Fix build for icu-59.1
 
