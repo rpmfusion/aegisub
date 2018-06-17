@@ -22,6 +22,9 @@ Patch0:         %{name}-pthread.patch
 %if 0%{?fedora} > 27
 Patch1:         https://github.com/%{gituser}/%{gitname}/commit/dd67db47cb2203e7a14058e52549721f6ff16a49.patch#/icu_59_buildfix.patch
 %endif
+%if 0%{?fedora} > 28
+Patch2:         https://github.com/%{gituser}/%{gitname}/commit/d4461f65be5aa440506bd23e90e71aaf8f0ebada.patch#/icu_61_buildfix.patch
+%endif
 
 ExclusiveArch:  i686 x86_64 armv7hl
 
@@ -91,6 +94,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %changelog
 * Sun Jun 17 2018 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-10
 - Rebuild for new libass version
+- Fix build for icu-61
 
 * Wed Feb 28 2018 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 3.2.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
