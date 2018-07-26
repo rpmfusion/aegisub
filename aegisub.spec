@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -92,6 +92,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Thu Jul 26 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.2.2-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Sun Jun 17 2018 Leigh Scott <leigh123linux@googlemail.com> - 3.2.2-10
 - Rebuild for new libass version
 - Fix build for icu-61
