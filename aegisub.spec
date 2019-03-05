@@ -66,6 +66,10 @@ including a built-in real-time video preview.
 
 %prep
 %autosetup -p1 -n %{gitname}-%{version}
+for file in subtitles_provider_libass video_provider_dummy video_frame colour_button
+do
+    sed -i 's|boost/gil/gil_all.hpp|boost/gil.hpp|' src/${file}.cpp
+done
 
 
 %build
