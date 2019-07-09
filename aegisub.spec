@@ -1,12 +1,13 @@
 %global         gituser         Aegisub
 %global         gitname         Aegisub
-%global         commit          f743d1411e09cbb2bd34ddd2d4b6738101fab710
+%global         commit          524c6114a82157b143567240884de3a6d030b091
 %global         shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global gitdate 20180710
 
 
 Name:           aegisub
 Version:        3.2.2
-Release:        12%{?dist}
+Release:        13.%{gitdate}.git%{shortcommit}%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -15,26 +16,27 @@ Summary:        Tool for creating and modifying subtitles
 License:        BSD and MIT and MPLv1.1
 URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
-Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-Patch0:         %{name}-pthread.patch
-# Fix compilation against icu 59.1
-# https://github.com/Aegisub/Aegisub/commit/dd67db47cb2203e7a14058e52549721f6ff16a49
-%if 0%{?fedora} > 27
-Patch1:         https://github.com/%{gituser}/%{gitname}/commit/dd67db47cb2203e7a14058e52549721f6ff16a49.patch#/icu_59_buildfix.patch
-%endif
-%if 0%{?fedora} > 28
-Patch2:         https://github.com/%{gituser}/%{gitname}/commit/d4461f65be5aa440506bd23e90e71aaf8f0ebada.patch#/icu_61_buildfix.patch
-%endif
+Source0:        https://github.com/%{gituser}/%{gitname}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+Patch1:         Makefile.inc.in.patch
+Patch2:         remove-vendor-luajit-dependency.patch
+Patch3:         aegisub-no-optimize.patch
+Patch4:         luabins.patch
+#PATCH-FIX-OPENSUSE - davejplater@gmail.com - aegisub-git-version.patch - Create git_version.h which is missing in git.
+Patch5:         aegisub-git-version.patch
+#PATCH-FIX-UPSTREAM - 9@cirno.systems - aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch - Fixes undefined behavior e.g. when scrolling the audio view in spectrogram mode.
+Patch6:         aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch
+#PATCH-FIX-UPSTREAM - davejplater@gmail.com - aegisub-boost169.patch - Fixes build with boost 1.69 where boost/gil/gil_all.hpp is moved to -boost169.patch
+Patch7:         aegisub-boost169.patch
 
 ExclusiveArch:  i686 x86_64 armv7hl
 
 Requires:       hicolor-icon-theme
 
-BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  automake
+BuildRequires:  intltool
 BuildRequires:  wxWidgets-devel
-BuildRequires:  openal-devel
+#BuildRequires:  openal-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  libass-devel
@@ -48,10 +50,10 @@ BuildRequires:  lua-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libX11-devel
 BuildRequires:  valgrind-devel
-BuildRequires:  intltool
 BuildRequires:  desktop-file-utils
+BuildRequires:  luajit-devel
 #Used for OpenAL tests during configure
-BuildRequires:  libcxx-devel
+#BuildRequires:  libcxx-devel
 
 #needed for the perl script downloading the additional documentation from wiki
 #for offline reading
@@ -65,17 +67,20 @@ subtitles to audio, and features many powerful tools for styling them,
 including a built-in real-time video preview.
 
 %prep
-%autosetup -p1 -n %{gitname}-%{version}
-for file in subtitles_provider_libass video_provider_dummy video_frame colour_button
-do
-    sed -i 's|boost/gil/gil_all.hpp|boost/gil.hpp|' src/${file}.cpp
-done
+%autosetup -p1 -n %{gitname}-%{commit}
+#for file in subtitles_provider_libass video_provider_dummy video_frame colour_button
+#do
+#    sed -i 's|boost/gil/gil_all.hpp|boost/gil.hpp|' src/${file}.cpp
+#done
 
 
 %build
-#remove version postfix
-sed -i -e 's/aegisub-[0-9.]*/aegisub/g' configure
-%configure --with-wx-config=wx-config-3.0
+./autogen.sh
+%configure \
+    --disable-update-checker \
+    --with-player-audio=PulseAudio \
+    --without-oss \
+	--with-wx-config=wx-config-3.0
 %make_build
 
 
@@ -96,6 +101,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Tue Jul 09 2019 Sérgio Basto <sergio@serjux.com> - 3.2.2-13.20180710.git524c611
+- Update to git20180710 ( commit 524c6114a82157b143567240884de3a6d030b091 )
+  (#5275)
+
 * Mon Mar 04 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.2.2-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
