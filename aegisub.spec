@@ -28,7 +28,7 @@ Patch6:         aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch
 #PATCH-FIX-UPSTREAM - davejplater@gmail.com - aegisub-boost169.patch - Fixes build with boost 1.69 where boost/gil/gil_all.hpp is moved to -boost169.patch
 Patch7:         aegisub-boost169.patch
 
-ExclusiveArch:  i686 x86_64 armv7hl
+ExcludeArch:    ppc ppc64 ppc64le i686 armv7hl
 
 Requires:       hicolor-icon-theme
 
