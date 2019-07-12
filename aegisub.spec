@@ -28,36 +28,41 @@ Patch6:         aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch
 #PATCH-FIX-UPSTREAM - davejplater@gmail.com - aegisub-boost169.patch - Fixes build with boost 1.69 where boost/gil/gil_all.hpp is moved to -boost169.patch
 Patch7:         aegisub-boost169.patch
 
-ExcludeArch:    ppc ppc64 ppc64le i686 armv7hl
+# luajit isn't available on powerpc
+# boost m4 detection is failing on i686 and armv7hl
+ExcludeArch:  %{power64} %{ix86} %{arm}
 
-Requires:       hicolor-icon-theme
-
+BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
-BuildRequires:  automake
+BuildRequires:  libtool
+
+BuildRequires:  alsa-lib-devel
+BuildRequires:  boost-devel
+# To be enabled
+#BuildRequires:  cajun-jsonapi-devel
+BuildRequires:  ffms2-devel
+BuildRequires:  fftw-devel
+BuildRequires:  hunspell-devel
 BuildRequires:  intltool
-BuildRequires:  wxWidgets-devel
+BuildRequires:  libass-devel
+#Used for OpenAL tests during configure
+#BuildRequires:  libcxx-devel
+BuildRequires:  libGL-devel
+BuildRequires:  libICE-devel
+BuildRequires:  libX11-devel
+BuildRequires:  lua-devel
+BuildRequires:  luajit-devel
 #BuildRequires:  openal-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  libass-devel
-BuildRequires:  ffms2-devel
-BuildRequires:  fftw-devel
-BuildRequires:  alsa-lib-devel
-BuildRequires:  boost-devel
-BuildRequires:  mesa-libGL-devel
-BuildRequires:  hunspell-devel
-BuildRequires:  lua-devel
+BuildRequires:  uchardet-devel
+BuildRequires:  wxWidgets-devel
 BuildRequires:  zlib-devel
-BuildRequires:  libX11-devel
-BuildRequires:  valgrind-devel
-BuildRequires:  desktop-file-utils
-BuildRequires:  luajit-devel
-#Used for OpenAL tests during configure
-#BuildRequires:  libcxx-devel
 
 #needed for the perl script downloading the additional documentation from wiki
 #for offline reading
 Requires:       /usr/bin/perl perl(strict) perl(HTML::LinkExtor) perl(LWP) perl(File::Path) perl(utf8) perl(URI) perl(warnings)
+Requires:       hicolor-icon-theme
 
 
 %description
