@@ -7,7 +7,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        13.%{gitdate}.git%{shortcommit}%{?dist}
+Release:        14.%{gitdate}.git%{shortcommit}%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -106,6 +106,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 
 %changelog
+* Fri Jul 12 2019 Nicolas Chauvet <kwizart@gmail.com> - 3.2.2-14.20180710.git524c611
+- Add missing BR libICE - uchardet
+
 * Tue Jul 09 2019 Sérgio Basto <sergio@serjux.com> - 3.2.2-13.20180710.git524c611
 - Update to git20180710 ( commit 524c6114a82157b143567240884de3a6d030b091 )
   (#5275)
