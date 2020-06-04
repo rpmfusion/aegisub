@@ -56,8 +56,7 @@ BuildRequires:  luajit-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  uchardet-devel
-BuildRequires:  wxWidgets-devel
-BuildRequires:  wxBase3-devel
+BuildRequires:  wxGTK3-devel
 BuildRequires:  zlib-devel
 
 #needed for the perl script downloading the additional documentation from wiki
