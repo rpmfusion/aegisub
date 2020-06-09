@@ -27,6 +27,8 @@ Patch5:         aegisub-git-version.patch
 Patch6:         aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch
 #PATCH-FIX-UPSTREAM - davejplater@gmail.com - aegisub-boost169.patch - Fixes build with boost 1.69 where boost/gil/gil_all.hpp is moved to -boost169.patch
 Patch7:         aegisub-boost169.patch
+# https://github.com/wangqr/Aegisub/commit/f4cc905c69ca69c68cb95674cefce4abc37ce046
+Patch8:         aegisub-fix_build_with_make4.3.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
