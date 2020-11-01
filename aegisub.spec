@@ -1,13 +1,12 @@
 %global         gituser         Aegisub
 %global         gitname         Aegisub
-%global         commit          524c6114a82157b143567240884de3a6d030b091
+%global         commit          6f546951b4f004da16ce19ba638bf3eedefb9f31
 %global         shortcommit     %(c=%{commit}; echo ${c:0:7})
-%global gitdate 20180710
-
+%global gitdate 20191006
 
 Name:           aegisub
 Version:        3.2.2
-Release:        19.%{gitdate}.git%{shortcommit}%{?dist}
+Release:        20.%{gitdate}.git%{shortcommit}%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -23,12 +22,8 @@ Patch3:         aegisub-no-optimize.patch
 Patch4:         luabins.patch
 #PATCH-FIX-OPENSUSE - davejplater@gmail.com - aegisub-git-version.patch - Create git_version.h which is missing in git.
 Patch5:         aegisub-git-version.patch
-#PATCH-FIX-UPSTREAM - 9@cirno.systems - aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch - Fixes undefined behavior e.g. when scrolling the audio view in spectrogram mode.
-Patch6:         aegisub-DataBlockCache-Fix-crash-in-cache-invalidation.patch
-#PATCH-FIX-UPSTREAM - davejplater@gmail.com - aegisub-boost169.patch - Fixes build with boost 1.69 where boost/gil/gil_all.hpp is moved to -boost169.patch
-Patch7:         aegisub-boost169.patch
 # https://github.com/wangqr/Aegisub/commit/f4cc905c69ca69c68cb95674cefce4abc37ce046
-Patch8:         aegisub-fix_build_with_make4.3.patch
+Patch6:         aegisub-fix_build_with_make4.3.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
@@ -42,10 +37,11 @@ BuildRequires:  alsa-lib-devel
 BuildRequires:  boost-devel
 # To be enabled
 #BuildRequires:  cajun-jsonapi-devel
-BuildRequires:  ffms2-devel
+BuildRequires:  ffms2-devel >= 2.40
 BuildRequires:  fftw-devel
 BuildRequires:  hunspell-devel
 BuildRequires:  intltool
+BuildRequires:  libappstream-glib
 BuildRequires:  libass-devel
 #Used for OpenAL tests during configure
 #BuildRequires:  libcxx-devel
@@ -58,12 +54,18 @@ BuildRequires:  luajit-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  uchardet-devel
-BuildRequires:  wxGTK3-devel
+BuildRequires:  wxGTK-devel
 BuildRequires:  zlib-devel
 
 #needed for the perl script downloading the additional documentation from wiki
 #for offline reading
-Requires:       /usr/bin/perl perl(strict) perl(HTML::LinkExtor) perl(LWP) perl(File::Path) perl(utf8) perl(URI) perl(warnings)
+Requires:       /usr/bin/perl
+Requires:       perl(strict)
+Requires:       perl(HTML::LinkExtor)
+Requires:       perl(LWP)
+Requires:       perl(File::Path)
+Requires:       perl(utf8) perl(URI)
+Requires:       perl(warnings)
 Requires:       hicolor-icon-theme
 
 
@@ -75,10 +77,6 @@ including a built-in real-time video preview.
 
 %prep
 %autosetup -p1 -n %{gitname}-%{commit}
-#for file in subtitles_provider_libass video_provider_dummy video_frame colour_button
-#do
-#    sed -i 's|boost/gil/gil_all.hpp|boost/gil.hpp|' src/${file}.cpp
-#done
 
 
 %build
@@ -87,7 +85,7 @@ including a built-in real-time video preview.
     --disable-update-checker \
     --with-player-audio=PulseAudio \
     --without-oss \
-	--with-wx-config=wx-config-3.0
+    --with-wx-config=wx-config-3.1
 %make_build
 
 
@@ -95,6 +93,7 @@ including a built-in real-time video preview.
 %make_install
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appdata.xml
 
 %find_lang %{name}
 
@@ -105,9 +104,13 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
+%{_metainfodir}/aegisub.appdata.xml
 
 
 %changelog
+* Sun Nov  1 2020 Leigh Scott <leigh123linux@gmail.com> - 3.2.2-20.20191006.git6f54695
+- Update to lastest git snapshot
+
 * Sun Nov  1 2020 Leigh Scott <leigh123linux@gmail.com> - 3.2.2-19.20180710.git524c611
 - Rebuild
 
