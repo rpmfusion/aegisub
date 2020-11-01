@@ -24,6 +24,7 @@ Patch4:         luabins.patch
 Patch5:         aegisub-git-version.patch
 # https://github.com/wangqr/Aegisub/commit/f4cc905c69ca69c68cb95674cefce4abc37ce046
 Patch6:         aegisub-fix_build_with_make4.3.patch
+Patch7:         Restrict-the-usage-of-undocumented-wxBitmap.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
@@ -54,7 +55,7 @@ BuildRequires:  luajit-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  uchardet-devel
-BuildRequires:  wxGTK-devel
+BuildRequires:  wxGTK3-devel
 BuildRequires:  zlib-devel
 
 #needed for the perl script downloading the additional documentation from wiki
@@ -80,12 +81,13 @@ including a built-in real-time video preview.
 
 
 %build
+export CXXFLAGS="%{optflags} -Wno-deprecated-declarations -Wno-deprecated-copy"
 ./autogen.sh
 %configure \
     --disable-update-checker \
     --with-player-audio=PulseAudio \
     --without-oss \
-    --with-wx-config=wx-config-3.1
+    --with-wx-config=wx-config-3.0
 %make_build
 
 
