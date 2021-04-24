@@ -6,7 +6,7 @@
 
 Name:           aegisub
 Version:        3.2.2
-Release:        21.%{gitdate}.git%{shortcommit}%{?dist}
+Release:        22.%{gitdate}.git%{shortcommit}%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -110,6 +110,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Sat Apr 24 2021 Leigh Scott <leigh123linux@gmail.com> - 3.2.2-22.20191006.git6f54695
+- Rebuilt for removed libstdc++ symbol (#1937698)
+
 * Wed Feb 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.2.2-21.20191006.git6f54695
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
