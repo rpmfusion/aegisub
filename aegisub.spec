@@ -84,6 +84,7 @@ including a built-in real-time video preview.
 export CXXFLAGS="%{optflags} -Wno-deprecated-declarations -Wno-deprecated-copy"
 ./autogen.sh
 %configure \
+    --disable-gcc-prec \
     --disable-update-checker \
     --with-player-audio=PulseAudio \
     --without-oss \
