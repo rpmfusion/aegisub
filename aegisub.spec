@@ -1,12 +1,14 @@
 %global         gituser         Aegisub
+%global         gituser         wangqr
 %global         gitname         Aegisub
 %global         commit          6f546951b4f004da16ce19ba638bf3eedefb9f31
 %global         shortcommit     %(c=%{commit}; echo ${c:0:7})
 %global gitdate 20191006
 
 Name:           aegisub
-Version:        3.2.2
-Release:        25.%{gitdate}.git%{shortcommit}%{?dist}
+Version:        3.3.2
+#Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
+Release:        1%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -15,16 +17,10 @@ Summary:        Tool for creating and modifying subtitles
 License:        BSD and MIT and MPLv1.1
 URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
-Source0:        https://github.com/%{gituser}/%{gitname}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
-Patch1:         Makefile.inc.in.patch
-Patch2:         remove-vendor-luajit-dependency.patch
-Patch3:         aegisub-no-optimize.patch
-Patch4:         luabins.patch
+#Source0:        https://github.com/%%{gituser}/%%{gitname}/archive/%%{commit}/%%{name}-%%{shortcommit}.tar.gz
+Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}/%{name}-%{version}.tar.gz
 #PATCH-FIX-OPENSUSE - davejplater@gmail.com - aegisub-git-version.patch - Create git_version.h which is missing in git.
 Patch5:         aegisub-git-version.patch
-# https://github.com/wangqr/Aegisub/commit/f4cc905c69ca69c68cb95674cefce4abc37ce046
-Patch6:         aegisub-fix_build_with_make4.3.patch
-Patch7:         Restrict-the-usage-of-undocumented-wxBitmap.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
@@ -77,18 +73,16 @@ subtitles to audio, and features many powerful tools for styling them,
 including a built-in real-time video preview.
 
 %prep
-%autosetup -p1 -n %{gitname}-%{commit}
+%autosetup -p1 -n %{gitname}-%{version}
 
 
 %build
 export CXXFLAGS="%{optflags} -Wno-deprecated-declarations -Wno-deprecated-copy"
 ./autogen.sh
 %configure \
-    --disable-gcc-prec \
     --disable-update-checker \
     --with-player-audio=PulseAudio \
-    --without-oss \
-    --with-wx-config=wx-config-3.0
+    --without-oss
 %make_build
 
 
@@ -111,6 +105,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Wed Apr 20 2022 Sérgio Basto <sergio@serjux.com> - 3.3.2-1
+- Update aegisub to 3.3.2 using wangqr fork (as opensuse)
+
 * Wed Feb 09 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.2.2-25.20191006.git6f54695
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
