@@ -8,7 +8,7 @@
 Name:           aegisub
 Version:        3.3.2
 #Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -105,6 +105,10 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Sat Aug 06 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.3.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
+  5.1
+
 * Wed Apr 20 2022 Sérgio Basto <sergio@serjux.com> - 3.3.2-1
 - Update aegisub to 3.3.2 using wangqr fork (as opensuse)
 
