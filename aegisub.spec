@@ -6,9 +6,9 @@
 %global gitdate 20191006
 
 Name:           aegisub
-Version:        3.3.2
+Version:        3.3.3
 #Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -19,8 +19,7 @@ URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
 #Source0:        https://github.com/%%{gituser}/%%{gitname}/archive/%%{commit}/%%{name}-%%{shortcommit}.tar.gz
 Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}/%{name}-%{version}.tar.gz
-#PATCH-FIX-OPENSUSE - davejplater@gmail.com - aegisub-git-version.patch - Create git_version.h which is missing in git.
-Patch5:         aegisub-git-version.patch
+Patch6:         aegisub-buildfix_autotools.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
@@ -51,7 +50,7 @@ BuildRequires:  luajit-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  uchardet-devel
-BuildRequires:  wxGTK3-devel
+BuildRequires:  wxGTK-devel
 BuildRequires:  zlib-devel
 
 #needed for the perl script downloading the additional documentation from wiki
@@ -78,6 +77,8 @@ including a built-in real-time video preview.
 
 %build
 export CXXFLAGS="%{optflags} -Wno-deprecated-declarations -Wno-deprecated-copy"
+export FORCE_GIT_VERSION=%{version}
+./build/version.sh .
 ./autogen.sh
 %configure \
     --disable-update-checker \
@@ -105,6 +106,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Sun Aug 21 2022 Sérgio Basto <sergio@serjux.com> - 3.3.3-1
+- new version
+
 * Sat Aug 06 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.3.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1

@@ -1,6 +1,0 @@
---- /dev/null
-+++ a/build/git_version.h
-@@ -0,0 +1,3 @@
-+#define BUILD_GIT_VERSION_NUMBER  7898
-+#define BUILD_GIT_VERSION_STRING "3.3.2"
-+#define TAGGED_RELEASE 0
