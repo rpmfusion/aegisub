@@ -19,7 +19,8 @@ URL:            http://www.aegisub.org
 #               https://github.com/Aegisub/Aegisub
 #Source0:        https://github.com/%%{gituser}/%%{gitname}/archive/%%{commit}/%%{name}-%%{shortcommit}.tar.gz
 Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch6:         aegisub-buildfix_autotools.patch
+Patch0:         aegisub-buildfix_autotools.patch
+Patch1:         https://raw.githubusercontent.com/archlinux/svntogit-community/packages/aegisub/trunk/boost-1.81.0.patch
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
