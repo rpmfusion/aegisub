@@ -8,7 +8,7 @@
 Name:           aegisub
 Version:        3.3.3
 #Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -106,6 +106,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Thu Mar 02 2023 Leigh Scott <leigh123linux@gmail.com> - 3.3.3-3
+- Rebuild for new boost
+
 * Wed Dec 07 2022 Leigh Scott <leigh123linux@gmail.com> - 3.3.3-2
 - rebuilt
 
