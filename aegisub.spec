@@ -8,7 +8,7 @@
 Name:           aegisub
 Version:        3.3.3
 #Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -107,6 +107,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 
 
 %changelog
+* Sat Feb 03 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.3.3-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
 * Wed Aug 02 2023 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.3.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
