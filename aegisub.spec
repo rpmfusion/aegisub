@@ -1,14 +1,8 @@
-%global         gituser         Aegisub
-%global         gituser         wangqr
-%global         gitname         Aegisub
-%global         commit          6f546951b4f004da16ce19ba638bf3eedefb9f31
-%global         shortcommit     %(c=%{commit}; echo ${c:0:7})
-%global gitdate 20191006
+%global gitname Aegisub
 
 Name:           aegisub
-Version:        3.3.3
-#Release:        25.%%{gitdate}.git%%{shortcommit}%%{?dist}
-Release:        7%{?dist}
+Version:        3.4.1
+Release:        1%{?dist}
 Summary:        Tool for creating and modifying subtitles
 
 #src/gl/                   - MIT license. See src/gl/glext.h
@@ -16,11 +10,8 @@ Summary:        Tool for creating and modifying subtitles
 #universalchardet/         - MPL 1.1
 License:        BSD and MIT and MPLv1.1
 URL:            http://www.aegisub.org
-#               https://github.com/Aegisub/Aegisub
-#Source0:        https://github.com/%%{gituser}/%%{gitname}/archive/%%{commit}/%%{name}-%%{shortcommit}.tar.gz
-Source0:        https://github.com/%{gituser}/%{gitname}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         aegisub-buildfix_autotools.patch
-Patch1:         https://raw.githubusercontent.com/archlinux/svntogit-community/packages/aegisub/trunk/boost-1.81.0.patch
+Source0:        https://github.com/TypesettingTools/%{gitname}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source1:        %{version}_git_version.h
 
 # luajit isn't available on powerpc
 # boost m4 detection is failing on i686 and armv7hl
@@ -28,8 +19,9 @@ ExcludeArch:  %{power64} %{ix86} %{arm}
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc-c++
-BuildRequires:  libtool
-
+BuildRequires:  gmock-devel
+BuildRequires:  gtest-devel
+BuildRequires:  meson
 BuildRequires:  alsa-lib-devel
 BuildRequires:  boost-devel
 # To be enabled
@@ -37,17 +29,16 @@ BuildRequires:  boost-devel
 BuildRequires:  ffms2-devel >= 2.40
 BuildRequires:  fftw-devel
 BuildRequires:  hunspell-devel
-BuildRequires:  intltool
 BuildRequires:  libappstream-glib
 BuildRequires:  libass-devel
 #Used for OpenAL tests during configure
-#BuildRequires:  libcxx-devel
-BuildRequires:  libGL-devel
+BuildRequires:  libcurl-devel
 BuildRequires:  libICE-devel
 BuildRequires:  libX11-devel
 BuildRequires:  lua-devel
 BuildRequires:  luajit-devel
-#BuildRequires:  openal-devel
+BuildRequires:  mesa-libGL-devel
+BuildRequires:  openal-devel
 BuildRequires:  portaudio-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  uchardet-devel
@@ -74,25 +65,20 @@ including a built-in real-time video preview.
 
 %prep
 %autosetup -p1 -n %{gitname}-%{version}
+cp %{SOURCE1} git_version.h
 
 
 %build
-export CXXFLAGS="%{optflags} -Wno-deprecated-declarations -Wno-deprecated-copy"
-export FORCE_GIT_VERSION=%{version}
-./build/version.sh .
-./autogen.sh
-%configure \
-    --disable-update-checker \
-    --with-player-audio=PulseAudio \
-    --without-oss
-%make_build
+%meson \
+ -Denable_update_checker=false
+%meson_build
 
 
 %install
-%make_install
+%meson_install
 
-desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
-appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appdata.xml
+desktop-file-validate %{buildroot}/%{_datadir}/applications/org.aegisub.Aegisub.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/org.aegisub.Aegisub.metainfo.xml
 
 %find_lang %{name}
 
@@ -101,12 +87,15 @@ appstream-util validate-relax --nonet %{buildroot}/%{_metainfodir}/aegisub.appda
 %doc docs/*
 %{_bindir}/%{name}*
 %{_datadir}/%{name}/
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/*/apps/%{name}.*
-%{_metainfodir}/aegisub.appdata.xml
+%{_datadir}/applications/org.aegisub.Aegisub.desktop
+%{_datadir}/icons/hicolor/*/apps/org.aegisub.Aegisub.*
+%{_metainfodir}/org.aegisub.Aegisub.metainfo.xml
 
 
 %changelog
+* Fri Jan 03 2025 Leigh Scott <leigh123linux@gmail.com> - 3.4.1-1
+- Update to 3.4.1
+
 * Thu Aug 01 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.3.3-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
